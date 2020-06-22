@@ -10,6 +10,7 @@ package ca.sheridancollege.project;
  * game. Students wishing to add to the code should remember to add themselves as a modifier.
  *
  * @author dancye
+ * @author Kamil Trela, Jun 2020
  */
 public abstract class Card {
     //default modifier for child classes
@@ -21,5 +22,5 @@ public abstract class Card {
      */
     @Override
     public abstract String toString();
-
+    
 }
