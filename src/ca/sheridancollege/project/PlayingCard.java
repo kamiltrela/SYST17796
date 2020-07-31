@@ -1,43 +1,73 @@
 package ca.sheridancollege.project;
 
+/**
+ * This is a class that models the PlayingCard. Includes enums for Suit and Values.
+ * Code also includes the appropiate getters and setters for the data fields. 
+ * @author Kamil Trela, 2020
+ * @author Estefania Melo, 2020
+ */
+
 public class PlayingCard extends Card {
 
-	private Value value;
-	private Suit suit;
+    public enum Suit {
+        HEARTS,
+        CLUBS, 
+        SPADES, 
+        DIAMONDS
+    }
 
-	/**
-	 * 
-	 * @param value
-	 * @param suit
-	 */
-	public PlayingCard(Value value, Suit suit) {
-		// TODO - implement PlayingCard.PlayingCard
-		throw new UnsupportedOperationException();
-	}
+    public enum Value {
+        ACE, 
+        TWO, 
+        THREE, 
+        FOUR, 
+        FIVE, 
+        SIX, 
+        SEVEN,
+        EIGHT, 
+        NINE, 
+        TEN, 
+        JACK, 
+        QUEEN, 
+        KING
+    }
 
-	public Value getValue() {
-		return this.value;
-	}
+    private Value value;
+    private Suit suit;
 
-	/**
-	 * 
-	 * @param value
-	 */
-	public void setValue(Value value) {
-		this.value = value;
-	}
+    /**
+     *
+     * @param value
+     * @param suit
+     */
+    public PlayingCard(Value value, Suit suit) {
+        // TODO - implement PlayingCard.PlayingCard
+        throw new UnsupportedOperationException();
+    }
 
-	public Suit getSuit() {
-		return this.suit;
-	}
+    public Value getValue() {
+        return this.value;
+    }
 
-	/**
-	 * 
-	 * @param suit
-	 */
-	public void setSuit(Suit suit) {
-		this.suit = suit;
-	}
+    /**
+     *
+     * @param value
+     */
+    public void setValue(Value value) {
+        this.value = value;
+    }
+
+    public Suit getSuit() {
+        return this.suit;
+    }
+
+    /**
+     *
+     * @param suit
+     */
+    public void setSuit(Suit suit) {
+        this.suit = suit;
+    }
 
     @Override
     public String toString() {
