@@ -15,6 +15,13 @@ package ca.sheridancollege.project;
 public abstract class Player {
 
     private String name; //the unique name for this player
+    
+    /**
+     * no-arg constructor
+     */
+    public Player(){
+        
+    }
 
     /**
      * A constructor that allows you to set the player's unique ID
@@ -22,7 +29,7 @@ public abstract class Player {
      * @param name the unique ID to assign to this player.
      */
     public Player(String name) {
-        this.name = name;
+        setName(name);
     }
 
     /**
@@ -36,9 +43,16 @@ public abstract class Player {
      * Ensure that the playerID is unique
      *
      * @param name the player name to set
+     * @throws IllegalArgumentException : if input name is empty
      */
     public void setName(String name) {
-        this.name = name;
+        if(!name.isEmpty()){
+            this.name = name;
+        }
+        else{
+            throw new IllegalArgumentException("Name entered must be at least 1 character");
+        }
+            
     }
 
     /**

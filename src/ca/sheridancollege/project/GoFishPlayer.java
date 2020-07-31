@@ -4,6 +4,13 @@ public class GoFishPlayer extends Player {
 
 	private int gamesWon;
 	private int numOfBooks;
+        
+        /**
+         * no-arg constructor
+         */
+        public GoFishPlayer(){
+            
+        }
 
 	/**
 	 * 
@@ -39,6 +46,7 @@ public class GoFishPlayer extends Player {
 		this.numOfBooks = numOfBooks;
 	}
 
+        @Override
 	public void play() {
 		// TODO - implement GoFishPlayer.play
 		throw new UnsupportedOperationException();
