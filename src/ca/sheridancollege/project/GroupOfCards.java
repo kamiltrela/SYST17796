@@ -42,8 +42,8 @@ public class GroupOfCards {
         return cards;
     }
 
-    public void shuffle() {
-        Collections.shuffle(cards);
+    public void shuffle(ArrayList deck) {
+        Collections.shuffle(deck);
     }
 
     /**
