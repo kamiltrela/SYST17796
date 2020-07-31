@@ -1,19 +1,31 @@
 package ca.sheridancollege.project;
+/**
+ * This is an enumeration that represents the values of the cards being used. 
+ * @author Kamil Trela, 2020
+ * @author Estefania Melo, 2020
+ */
 
-public class Value {
 
-	private int ACE;
-	private int TWO;
-	private int THREE;
-	private int FOUR;
-	private int FIVE;
-	private int SIX;
-	private int SEVEN;
-	private int EIGHT;
-	private int NINE;
-	private int TEN;
-	private int JACK;
-	private int QUEEN;
-	private int KING;
+public enum Value {
+
+	 ACE,
+	 TWO,
+	 THREE,
+	 FOUR,
+	 FIVE,
+	 SIX,
+	 SEVEN,
+	 EIGHT,
+	 NINE,
+	 TEN,
+	 JACK,
+	 QUEEN,
+	 KING;
+         
+         private Value(){
+             
+         }
+         
+         
 
 }

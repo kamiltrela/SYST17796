@@ -1,10 +1,23 @@
 package ca.sheridancollege.project;
+/**
+ * This is an enumeration that represents the Suits of the cards being used. 
+ * @author Kamil Trela, 2020
+ * @author Estefania Melo, 2020
+ */
 
-public class Suit {
+public enum Suit {
 
-	private int HEARTS;
-	private int CLUBS;
-	private int SPADES;
-	private int DIAMONDS;
+	HEARTS,
+	CLUBS,
+	SPADES,
+	DIAMONDS;
+        
+        private Suit(){
+            
+        }
+        
+        
+    
+        
 
 }
