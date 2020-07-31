@@ -20,5 +20,8 @@ public class Main {
         System.out.println(tempHand);
         System.out.println(deck.deckOfCardsList.size());
 
+        System.out.println(deck.drawACard());
+        System.out.println(deck.deckOfCardsList.size());
+
     }
 }
