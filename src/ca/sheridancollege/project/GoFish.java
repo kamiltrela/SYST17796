@@ -14,12 +14,14 @@ public class GoFish extends Game {
 
     private int REQUIRED_PLAYERS = 2;
     private int currentPlayers;
-    private GroupOfCards playerOneHand;
-    private GroupOfCards playerTwoHand;
+    private GroupOfCards playerOneHand = new GroupOfCards();
+    private GroupOfCards playerTwoHand = new GroupOfCards();
     private GoFishPlayer player1 = new GoFishPlayer();
     private GoFishPlayer player2 = new GoFishPlayer();
     
-    private DeckOfCards deck;
+    private DeckOfCards deck = new DeckOfCards();
+    
+    
 
     /**
      * One argument
@@ -139,8 +141,16 @@ public class GoFish extends Game {
             }
         }
         
+        //generate a deck of cards to play with
         deck.generateDeck();
-        //playerOneHand.cards = deck.distributeHand();
+        
+        //hand 7 cards to each player from the deck
+        playerOneHand.cards = deck.distributeHand();
+        playerTwoHand.cards = deck.distributeHand();
+        
+        //choose the starting player randomly
+        
+
         
     }
 
