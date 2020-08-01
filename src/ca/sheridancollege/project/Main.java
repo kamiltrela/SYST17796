@@ -25,6 +25,7 @@ public class Main {
 
            GoFish game = new GoFish("Go Fish");
            game.setUpGame();
+           game.play();
 
     }
 }

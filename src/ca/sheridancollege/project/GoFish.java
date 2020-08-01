@@ -13,15 +13,15 @@ import java.util.Scanner;
 public class GoFish extends Game {
 
     private int REQUIRED_PLAYERS = 2;
-    private int currentPlayers;
+    private int numOfPlayers;
     private GroupOfCards playerOneHand = new GroupOfCards();
     private GroupOfCards playerTwoHand = new GroupOfCards();
     private GoFishPlayer player1 = new GoFishPlayer();
     private GoFishPlayer player2 = new GoFishPlayer();
-    
+
     private DeckOfCards deck = new DeckOfCards();
-    
-    
+
+    private int currentPlayer = 0;
 
     /**
      * One argument
@@ -34,17 +34,17 @@ public class GoFish extends Game {
         super(name);
     }
 
-    public int getCurrentPlayers() {
-        return this.currentPlayers;
+    public int getNumOfPlayers() {
+        return this.numOfPlayers;
     }
 
     /**
-     * Setter for currentPlayers
+     * Setter for numOfPlayers
      *
-     * @param currentPlayers
+     * @param numOfPlayers
      */
-    public void setCurrentPlayers(int currentPlayers) {
-        this.currentPlayers = currentPlayers;
+    public void setNumOfPlayers(int numOfPlayers) {
+        this.numOfPlayers = numOfPlayers;
     }
 
     public GroupOfCards getPlayerOneHand() {
@@ -78,8 +78,16 @@ public class GoFish extends Game {
      */
     @Override
     public void play() {
-        // TODO - implement GoFish.play
-        throw new UnsupportedOperationException();
+        Scanner sc = new Scanner(System.in);
+
+        if (currentPlayer == 1) {
+            askForCard(player1, playerOneHand);
+        }
+        else if(currentPlayer == 2){
+            askForCard(player2, playerTwoHand);
+        }
+        
+        
     }
 
     @Override
@@ -93,65 +101,84 @@ public class GoFish extends Game {
         throw new UnsupportedOperationException();
     }
 
-    public void askForCard() {
-        // TODO - implement GoFish.askForCard
-        throw new UnsupportedOperationException();
+    public void askForCard(GoFishPlayer player, GroupOfCards hand) {
+        Scanner sc = new Scanner(System.in);
+        
+            System.out.println(player.getName() + ", it is your turn, here are your cards: \n");
+
+            //print all the cards in the users hand
+            for (int i = 0; i < hand.cards.size(); i++) {
+                System.out.println((i + 1) + ": " + hand.cards.get(i));
+            }
+
+            //get user input to see which card they want to ask for
+            System.out.print("Choose a card to ask for by entering the associated number: ");
+            int userChoice = sc.nextInt() - 1;
+            PlayingCard askingCard = (PlayingCard) hand.cards.get(userChoice);
+            System.out.println(player.getName() + " says: \"give me all of your "
+                    + askingCard.getValue() + "s\"");
     }
+
+    
 
     public void setUpGame() {
         System.out.println("Welcome to Go Fish!");
         System.out.println("2 Players are required to play the game");
 
         /**
-         * The following block of code adds each users username to their
-         * respective GoFishPlayer object.
+         * The following block of code adds each users username to their respective GoFishPlayer object.
          */
         Scanner sc = new Scanner(System.in);
-        while (currentPlayers < REQUIRED_PLAYERS) {
+        while (numOfPlayers < REQUIRED_PLAYERS) {
             for (int i = 0; i < REQUIRED_PLAYERS; i++) {
-                System.out.print("Player " + (i+1) + " enter your name: ");
-                
+                System.out.print("Player " + (i + 1) + " enter your name: ");
+
                 boolean validName = false;
-                if (currentPlayers == 0) {
+                if (numOfPlayers == 0) {
                     do {
                         try {
                             player1.setName(sc.nextLine());
                             validName = true;
-                            System.out.println("player1 added");
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
                         }
                     } while (!validName);
                 }
 
-                if (currentPlayers == 1) {
+                if (numOfPlayers == 1) {
                     do {
                         try {
                             player2.setName(sc.nextLine());
                             validName = true;
-                            System.out.println("player2 added");
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
                         }
                     } while (!validName);
                 }
-                
-                currentPlayers++;
-                
+
+                numOfPlayers++;
+
             }
         }
-        
+
         //generate a deck of cards to play with
         deck.generateDeck();
-        
+
         //hand 7 cards to each player from the deck
         playerOneHand.cards = deck.distributeHand();
         playerTwoHand.cards = deck.distributeHand();
-        
-        //choose the starting player randomly
-        
 
-        
+        //choose the starting player randomly
+        if (Math.random() != 0.5) {
+            currentPlayer = 1;
+        }
+
+        if (currentPlayer == 1) {
+            System.out.println(player1.getName() + " will start first!");
+        } else {
+            System.out.println(player2.getName() + " will start first!");
+        }
+
     }
 
 }
