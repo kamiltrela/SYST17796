@@ -1,5 +1,6 @@
 package ca.sheridancollege.project;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -81,13 +82,13 @@ public class GoFish extends Game {
         Scanner sc = new Scanner(System.in);
 
         if (currentPlayer == 1) {
-            askForCard(player1, playerOneHand);
+            PlayingCard askingCard = askForCard(player1, playerOneHand);
+            checkForCard(askingCard, playerTwoHand);
+        } else if (currentPlayer == 2) {
+            PlayingCard askingCard = askForCard(player2, playerTwoHand);
+            checkForCard(askingCard, playerOneHand);
         }
-        else if(currentPlayer == 2){
-            askForCard(player2, playerTwoHand);
-        }
-        
-        
+
     }
 
     @Override
@@ -101,25 +102,57 @@ public class GoFish extends Game {
         throw new UnsupportedOperationException();
     }
 
-    public void askForCard(GoFishPlayer player, GroupOfCards hand) {
+    /**
+     * This class will prompt a user if it is their turn,
+     * the players hand will be displayed and the user will choose a card
+     * by entering a number.
+     * @param player
+     * @param hand 
+     */
+    public PlayingCard askForCard(GoFishPlayer player, GroupOfCards hand) {
         Scanner sc = new Scanner(System.in);
+
+        System.out.println(player.getName() + ", it is your turn, here are your cards: \n");
+
+        //print all the cards in the users hand
+        for (int i = 0; i < hand.cards.size(); i++) {
+            System.out.println((i + 1) + ": " + hand.cards.get(i));
+        }
+
+        //get user input to see which card they want to ask for
+        System.out.print("Choose a card to ask for by entering the associated number: ");
+        int userChoice = sc.nextInt() - 1;
+        PlayingCard askingCard = (PlayingCard) hand.cards.get(userChoice);
+        System.out.println(player.getName() + " says: \"give me all of your "
+                + askingCard.getValue() + "s\"");
         
-            System.out.println(player.getName() + ", it is your turn, here are your cards: \n");
-
-            //print all the cards in the users hand
-            for (int i = 0; i < hand.cards.size(); i++) {
-                System.out.println((i + 1) + ": " + hand.cards.get(i));
-            }
-
-            //get user input to see which card they want to ask for
-            System.out.print("Choose a card to ask for by entering the associated number: ");
-            int userChoice = sc.nextInt() - 1;
-            PlayingCard askingCard = (PlayingCard) hand.cards.get(userChoice);
-            System.out.println(player.getName() + " says: \"give me all of your "
-                    + askingCard.getValue() + "s\"");
+        return askingCard;
     }
-
-    
+    /**
+     * This method will check an opponents hand for cards of the same value as 
+     * the ones the current player is asking for.
+     * @param askingCard : card the current player is asking for
+     * @param opponentHand : current players opponents card hand
+     * @return ArrayList of type PlayingCard : contains all cards of same value as input card 
+     */
+    public ArrayList<PlayingCard> checkForCard(PlayingCard askingCard, GroupOfCards opponentHand){
+        ArrayList<PlayingCard> cardsToGive = new ArrayList<>();
+        
+        for (int i = 0; i < opponentHand.cards.size(); i++) {
+           PlayingCard temp = (PlayingCard) opponentHand.cards.get(i); 
+           if(askingCard.getValue() == temp.getValue()){
+               System.out.println("found a match!");
+               System.out.println(temp);
+               cardsToGive.add(temp);
+               opponentHand.cards.remove(temp);
+           }
+        }
+        
+        if(cardsToGive.isEmpty()){
+            System.out.println("Go fish!");
+        }
+        return cardsToGive;
+    }
 
     public void setUpGame() {
         System.out.println("Welcome to Go Fish!");
@@ -134,6 +167,8 @@ public class GoFish extends Game {
                 System.out.print("Player " + (i + 1) + " enter your name: ");
 
                 boolean validName = false;
+                
+                //set player1 name
                 if (numOfPlayers == 0) {
                     do {
                         try {
@@ -145,6 +180,7 @@ public class GoFish extends Game {
                     } while (!validName);
                 }
 
+                //set player2 name
                 if (numOfPlayers == 1) {
                     do {
                         try {
@@ -171,11 +207,10 @@ public class GoFish extends Game {
         //choose the starting player randomly
         if (Math.random() != 0.5) {
             currentPlayer = 1;
-        }
-
-        if (currentPlayer == 1) {
             System.out.println(player1.getName() + " will start first!");
-        } else {
+        }
+        else if(Math.random() == 0.5){
+            currentPlayer = 2;
             System.out.println(player2.getName() + " will start first!");
         }
 
