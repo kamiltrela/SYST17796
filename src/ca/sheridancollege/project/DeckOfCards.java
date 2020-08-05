@@ -5,6 +5,13 @@ import ca.sheridancollege.project.PlayingCard.Suits;
 import ca.sheridancollege.project.PlayingCard.Value;
 import java.util.ArrayList;
 
+/**
+ * The class that models your game. You should create a more specific child of this class and instantiate the methods
+ * given.
+ *
+ * @author Kamil Trela, Jun 2020
+ * @author Estefania Melo, 2020
+ */
 
 public class DeckOfCards extends GroupOfCards {
 

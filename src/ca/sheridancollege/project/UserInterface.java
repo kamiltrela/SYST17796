@@ -7,9 +7,11 @@
 package ca.sheridancollege.project;
 
 /**
- * This class ++Insert Description Here++
+ * This class will function as the "view". Its going to take care of user inputs
+ * and outputs.
  *
- * @author Kamil Trela
+ * @author Kamil Trela, 2020
+ * @author Estefania Melo, 2020
  */
 public class UserInterface {
 
