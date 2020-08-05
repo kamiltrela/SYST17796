@@ -93,13 +93,17 @@ public class GoFish extends Game {
 
     @Override
     public void declareWinner() {
-        // TODO - implement GoFish.declareWinner
-        throw new UnsupportedOperationException();
+        if(player1.getNumOfBooks() < player2.getNumOfBooks()){
+            System.out.println(player2.getName() + " has won!");
+            player2.setGamesWon(player2.getGamesWon() + 1);
+        } else {
+            System.out.println(player1.getName() + " has won!");
+            player1.setGamesWon(player1.getGamesWon() + 1);
+        }
     }
 
     public void collectBook() {
-        // TODO - implement GoFish.collectBook
-        throw new UnsupportedOperationException();
+        
     }
 
     /**

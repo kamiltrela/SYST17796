@@ -4,8 +4,7 @@ package ca.sheridancollege.project;
 import ca.sheridancollege.project.PlayingCard.Suits;
 import ca.sheridancollege.project.PlayingCard.Value;
 import java.util.ArrayList;
-import java.util.Random;
-import org.graalvm.compiler.lir.util.ValueSet;
+
 
 public class DeckOfCards extends GroupOfCards {
 
