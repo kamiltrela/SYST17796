@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * This class will handle Go Fish game functionality. This class will first
- * store the number of players, the game can begin once two players have
- * registered. Each players hand will be stored in this class. Common game
- * functionality like starting the game, asking for cards, collecting books and
- * declaring a winner, will also be handled by this class.
+ * This class will handle Go Fish game functionality. This class will first store the number of players, the game can
+ * begin once two players have registered. Each players hand will be stored in this class. Common game functionality
+ * like starting the game, asking for cards, collecting books and declaring a winner, will also be handled by this
+ * class.
  *
  * @author Kamil Trela, 2020
  * @author Estefania Melo, 2020
@@ -69,6 +68,7 @@ public class GoFish extends Game {
 
     /**
      * This method sets the card hand for player 2
+     *
      * @param playerTwoHand
      */
     public void setPlayerTwoHand(GroupOfCards playerTwoHand) {
@@ -76,31 +76,47 @@ public class GoFish extends Game {
     }
 
     /**
-     * The play() method will handle the main game loop. The loop consists of
-     * handing each player 7 cards, starting player is chosen randomly. Starting
-     * player asks the opponent for a card, if opponent has requested card, they
-     * must hand it over. If opponent does not have requested card, player must
-     * draw a card.
+     * The play() method will handle the main game loop. The loop consists of handing each player 7 cards, starting
+     * player is chosen randomly. Starting player asks the opponent for a card, if opponent has requested card, they
+     * must hand it over. If opponent does not have requested card, player must draw a card.
      */
     @Override
     public void play() {
         Scanner sc = new Scanner(System.in);
 
-        if (currentPlayer == 1) {
-            PlayingCard askingCard = askForCard(player1, playerOneHand);
-            checkForCard(askingCard, playerTwoHand);
-        } else if (currentPlayer == 2) {
-            PlayingCard askingCard = askForCard(player2, playerTwoHand);
-            checkForCard(askingCard, playerOneHand);
-        }
+        do{
+            
+            if (currentPlayer == 1) {
+                // player asks for card from opponent
+                PlayingCard askingCard = askForCard(player1, playerOneHand);
+                // cards from opponent are saved in new ArrayList
+                ArrayList givenCards = checkForCard(askingCard, playerTwoHand);
+                // cards returned from opponent added to player hand
+                playerOneHand.cards.addAll(givenCards);
+                // check if player has a book, if they do remove the book and return the remaining cards
+                playerOneHand = collectBook(playerOneHand, player1);
+                currentPlayer = 2;
+            } else if (currentPlayer == 2) {
+                // player asks for card from opponent
+                PlayingCard askingCard = askForCard(player2, playerTwoHand);
+                // cards from opponent are saved in new ArrayList
+                ArrayList givenCards = checkForCard(askingCard, playerOneHand);
+                // cards returned from opponent added to player hand
+                playerTwoHand.cards.addAll(givenCards);
+                // check if player has a book, if they do remove the book and return the remaining cards
+                playerTwoHand = collectBook(playerTwoHand, player2);
+                currentPlayer = 1;
+            }
+        } while((player1.getNumOfBooks() + player2.getNumOfBooks()) < 13);
+        
+        declareWinner();
 
     }
 
     /**
-     * This method declares a winner based on which player has the greater
-     * number of books and prints out a statement to the console based on the
-     * winner
-     * 
+     * This method declares a winner based on which player has the greater number of books and prints out a statement to
+     * the console based on the winner
+     *
      */
     @Override
     public void declareWinner() {
@@ -113,13 +129,36 @@ public class GoFish extends Game {
         }
     }
 
-    public void collectBook() {
+    public GroupOfCards collectBook(GroupOfCards playerHand, GoFishPlayer player) {
 
+        GroupOfCards tempHand = playerHand;
+        
+        for (int i = 0; i < playerHand.cards.size(); i++) {
+            PlayingCard checkingAgainstCard = playerHand.cards.get(i);
+
+            int count = 0;
+            for (int j = 0; j < playerHand.cards.size(); j++) {
+                if (checkingAgainstCard.getValue() == playerHand.cards.get(j).getValue()) {
+                    if (playerHand.cards.get(i).getSuits() != playerHand.cards.get(j).getSuits()) {
+                        count++;
+                        playerHand.cards.remove(j);
+                    }
+                }
+                if (count == 3) {
+                    playerHand.cards.remove(checkingAgainstCard);
+                    player.addOneBook();
+                    System.out.println(player.getName() + " collected a book of " + checkingAgainstCard.getValue() + "s!");
+                }
+
+            }
+
+        }
+        return playerHand;
     }
 
     /**
-     * This class will prompt a user if it is their turn, the players hand will
-     * be displayed and the user will choose a card by entering a number.
+     * This class will prompt a user if it is their turn, the players hand will be displayed and the user will choose a
+     * card by entering a number.
      *
      * @param player
      * @param hand
@@ -137,7 +176,8 @@ public class GoFish extends Game {
         //get user input to see which card they want to ask for
         System.out.print("Choose a card to ask for by entering the associated number: ");
         int userChoice = sc.nextInt() - 1;
-        PlayingCard askingCard = (PlayingCard) hand.cards.get(userChoice);
+        PlayingCard askingCard = hand.cards.get(userChoice);
+        System.out.println("------\n size of player hand " + hand.cards.size() + "\n------");
         System.out.println(player.getName() + " says: \"give me all of your "
                 + askingCard.getValue() + "s\"");
 
@@ -145,19 +185,18 @@ public class GoFish extends Game {
     }
 
     /**
-     * This method will check an opponents hand for cards of the same value as
-     * the ones the current player is asking for.
+     * This method will check an opponents hand for cards of the same value as the ones the current player is asking
+     * for.
      *
      * @param askingCard : card the current player is asking for
      * @param opponentHand : current players opponents card hand
-     * @return ArrayList of type PlayingCard : contains all cards of same value
-     * as input card
+     * @return ArrayList of type PlayingCard : contains all cards of same value as input card
      */
     public ArrayList<PlayingCard> checkForCard(PlayingCard askingCard, GroupOfCards opponentHand) {
         ArrayList<PlayingCard> cardsToGive = new ArrayList<>();
 
         for (int i = 0; i < opponentHand.cards.size(); i++) {
-            PlayingCard temp = (PlayingCard) opponentHand.cards.get(i);
+            PlayingCard temp = opponentHand.cards.get(i);
             if (askingCard.getValue() == temp.getValue()) {
                 System.out.println("found a match!");
                 System.out.println(temp);
@@ -177,8 +216,7 @@ public class GoFish extends Game {
         System.out.println("2 Players are required to play the game");
 
         /**
-         * The following block of code adds each users username to their
-         * respective GoFishPlayer object.
+         * The following block of code adds each users username to their respective GoFishPlayer object.
          */
         Scanner sc = new Scanner(System.in);
         while (numOfPlayers < REQUIRED_PLAYERS) {
