@@ -7,7 +7,17 @@ package ca.sheridancollege.project;
  * @author Estefania Melo, 2020
  */
 
-public class PlayingCard extends Card {
+public class PlayingCard extends Card implements Comparable<PlayingCard>{
+
+    @Override
+    public int compareTo(PlayingCard o) {
+        if (value.ordinal() > o.getValue().ordinal())
+            return 1;
+        else if (value.ordinal() < o.getValue().ordinal())
+            return -1;
+        else
+            return 0;
+    }
 
  
 

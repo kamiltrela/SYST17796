@@ -84,9 +84,11 @@ public class GoFish extends Game {
     public void play() {
         Scanner sc = new Scanner(System.in);
 
-        do{
-            
+        do {
+
             if (currentPlayer == 1) {
+                // sort player hand
+                playerOneHand.sortCards();
                 // player asks for card from opponent
                 PlayingCard askingCard = askForCard(player1, playerOneHand);
                 // cards from opponent are saved in new ArrayList
@@ -107,8 +109,8 @@ public class GoFish extends Game {
                 playerTwoHand = collectBook(playerTwoHand, player2);
                 currentPlayer = 1;
             }
-        } while((player1.getNumOfBooks() + player2.getNumOfBooks()) < 13);
-        
+        } while ((player1.getNumOfBooks() + player2.getNumOfBooks()) < 13);
+
         declareWinner();
 
     }
@@ -132,27 +134,36 @@ public class GoFish extends Game {
     public GroupOfCards collectBook(GroupOfCards playerHand, GoFishPlayer player) {
 
         GroupOfCards tempHand = playerHand;
+        ArrayList<PlayingCard> book = new ArrayList<>();
         
+        System.out.println("input: " + tempHand.cards);
+
         for (int i = 0; i < playerHand.cards.size(); i++) {
             PlayingCard checkingAgainstCard = playerHand.cards.get(i);
-
+            System.out.println("current card: " + checkingAgainstCard);
+            
             int count = 0;
             for (int j = 0; j < playerHand.cards.size(); j++) {
                 if (checkingAgainstCard.getValue() == playerHand.cards.get(j).getValue()) {
-                    if (playerHand.cards.get(i).getSuits() != playerHand.cards.get(j).getSuits()) {
+                    if (checkingAgainstCard.getSuits() != playerHand.cards.get(j).getSuits()) {
                         count++;
-                        playerHand.cards.remove(j);
+                        System.out.println("REMOVED: " + playerHand.cards.get(j));
+                        book.add(playerHand.cards.get(j));
                     }
                 }
-                if (count == 3) {
-                    playerHand.cards.remove(checkingAgainstCard);
-                    player.addOneBook();
-                    System.out.println(player.getName() + " collected a book of " + checkingAgainstCard.getValue() + "s!");
-                }
-
+            }
+            if (count == 3) {
+                playerHand.cards.removeAll(book);
+                player.addOneBook();
+                System.out.println(player.getName() + " collected a book of " + checkingAgainstCard.getValue() + "s!");
+            } else if (count < 3) {
+                System.out.println("count=" + count + " : book : " +  book);
+                book.clear();
+                //playerHand.cards = tempHand.cards;
             }
 
         }
+        System.out.println("return: " + playerHand.cards);
         return playerHand;
     }
 
@@ -174,10 +185,9 @@ public class GoFish extends Game {
         }
 
         //get user input to see which card they want to ask for
-        System.out.print("Choose a card to ask for by entering the associated number: ");
+        System.out.print("Choose a card value to ask for by entering the associated number: ");
         int userChoice = sc.nextInt() - 1;
         PlayingCard askingCard = hand.cards.get(userChoice);
-        System.out.println("------\n size of player hand " + hand.cards.size() + "\n------");
         System.out.println(player.getName() + " says: \"give me all of your "
                 + askingCard.getValue() + "s\"");
 

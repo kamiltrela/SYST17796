@@ -59,5 +59,9 @@ public class GroupOfCards {
     public void setSize(int size) {
         this.size = size;
     }
+    
+    public void sortCards(){
+        Collections.sort(cards);
+    }
 
 }//end class
