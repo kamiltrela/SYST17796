@@ -5,10 +5,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * This class will handle Go Fish game functionality. This class will first store the number of players, the game can
- * begin once two players have registered. Each players hand will be stored in this class. Common game functionality
- * like starting the game, asking for cards, collecting books and declaring a winner, will also be handled by this
- * class.
+ * This class will handle Go Fish game functionality. This class will first
+ * store the number of players, the game can begin once two players have
+ * registered. Each players hand will be stored in this class. Common game
+ * functionality like starting the game, asking for cards, collecting books and
+ * declaring a winner, will also be handled by this class.
  *
  * @author Kamil Trela, 2020
  * @author Estefania Melo, 2020
@@ -77,9 +78,11 @@ public class GoFish extends Game {
     }
 
     /**
-     * The play() method will handle the main game loop. The loop consists of handing each player 7 cards, starting
-     * player is chosen randomly. Starting player asks the opponent for a card, if opponent has requested card, they
-     * must hand it over. If opponent does not have requested card, player must draw a card.
+     * The play() method will handle the main game loop. The loop consists of
+     * handing each player 7 cards, starting player is chosen randomly. Starting
+     * player asks the opponent for a card, if opponent has requested card, they
+     * must hand it over. If opponent does not have requested card, player must
+     * draw a card.
      */
     @Override
     public void play() {
@@ -119,8 +122,9 @@ public class GoFish extends Game {
     }
 
     /**
-     * This method declares a winner based on which player has the greater number of books and prints out a statement to
-     * the console based on the winner
+     * This method declares a winner based on which player has the greater
+     * number of books and prints out a statement to the console based on the
+     * winner
      *
      */
     @Override
@@ -170,8 +174,8 @@ public class GoFish extends Game {
     }
 
     /**
-     * This class will prompt a user if it is their turn, the players hand will be displayed and the user will choose a
-     * card by entering a number.
+     * This class will prompt a user if it is their turn, the players hand will
+     * be displayed and the user will choose a card by entering a number.
      *
      * @param player
      * @param hand
@@ -190,6 +194,14 @@ public class GoFish extends Game {
         }
 
         while (!validNumber) {
+            //if statement check if the playerHand is empty and if the deck is NOT empty
+            if (hand.cards.isEmpty() && !deck.deckOfCardsList.isEmpty()) {
+                hand.cards.add(deck.drawACard());
+            } else if (hand.cards.isEmpty() && deck.deckOfCardsList.isEmpty()) {
+                declareWinner();
+                break;
+            }
+
             try {
                 //get user input to see which card they want to ask for
                 System.out.print("Choose a card value to ask for by entering the associated number: ");
@@ -197,27 +209,27 @@ public class GoFish extends Game {
                 int userChoice = Integer.parseInt(user) - 1;
                 askingCard = hand.cards.get(userChoice);
                 validNumber = true;
+                System.out.println("\n" + player.getName() + " says: \"give me all of your "
+                        + askingCard.getValue() + "s\"");
             } catch (NumberFormatException e1) {
                 System.out.println("Enter only integer numbers, don't enter letters or spaces");
 
             } catch (IndexOutOfBoundsException e2) {
-                System.out.println("Choose one of the numbers on the left side of your cards.");                
+                System.out.println("Choose one of the numbers on the left side of your cards.");
             }
         }
-
-        System.out.println("\n" + player.getName() + " says: \"give me all of your "
-                + askingCard.getValue() + "s\"");
 
         return askingCard;
     }
 
     /**
-     * This method will check an opponents hand for cards of the same value as the ones the current player is asking
-     * for.
+     * This method will check an opponents hand for cards of the same value as
+     * the ones the current player is asking for.
      *
      * @param askingCard : card the current player is asking for
      * @param opponentHand : current players opponents card hand
-     * @return ArrayList of type PlayingCard : contains all cards of same value as input card
+     * @return ArrayList of type PlayingCard : contains all cards of same value
+     * as input card
      */
     public ArrayList<PlayingCard> checkForCard(PlayingCard askingCard, GroupOfCards opponentHand, GoFishPlayer opponent, GoFishPlayer player) {
         ArrayList<PlayingCard> cardsToGive = new ArrayList<>();
@@ -230,11 +242,13 @@ public class GoFish extends Game {
             }
         }
 
-        if (cardsToGive.isEmpty()) {
+        if (cardsToGive.isEmpty() && !deck.deckOfCardsList.isEmpty()) {
             System.out.println(opponent.getName() + " says: \"Go fish!\"");
             PlayingCard drawnCard = deck.drawACard();
             System.out.println(player.getName() + " drew a " + drawnCard);
             cardsToGive.add(drawnCard);
+        } else{
+            System.out.println("The deck has no cards");
         }
         opponentHand.cards.removeAll(cardsToGive);
         return cardsToGive;
@@ -245,7 +259,8 @@ public class GoFish extends Game {
         System.out.println("2 Players are required to play the game");
 
         /**
-         * The following block of code adds each users username to their respective GoFishPlayer object.
+         * The following block of code adds each users username to their
+         * respective GoFishPlayer object.
          */
         Scanner sc = new Scanner(System.in);
         while (numOfPlayers < REQUIRED_PLAYERS) {

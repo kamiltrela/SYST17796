@@ -38,9 +38,12 @@ public class DeckOfCards extends GroupOfCards {
 	}
 
 	public PlayingCard drawACard() {
-            PlayingCard temp1 = deckOfCardsList.get(0);
-            deckOfCardsList.remove(0);
-            
+            PlayingCard temp1 = null;
+            if(!deckOfCardsList.isEmpty()){
+                temp1 = deckOfCardsList.get(0);
+                deckOfCardsList.remove(0);
+            } 
+   
             return temp1;
 	}
 
