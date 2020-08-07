@@ -1,6 +1,7 @@
 package ca.sheridancollege.project;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Scanner;
  */
 public class GoFish extends Game {
 
-    private int REQUIRED_PLAYERS = 2;
+    private final int REQUIRED_PLAYERS = 2;
     private int numOfPlayers;
     private GroupOfCards playerOneHand = new GroupOfCards();
     private GroupOfCards playerTwoHand = new GroupOfCards();
@@ -92,17 +93,19 @@ public class GoFish extends Game {
                 // player asks for card from opponent
                 PlayingCard askingCard = askForCard(player1, playerOneHand);
                 // cards from opponent are saved in new ArrayList
-                ArrayList givenCards = checkForCard(askingCard, playerTwoHand);
+                ArrayList givenCards = checkForCard(askingCard, playerTwoHand, player2, player1);
                 // cards returned from opponent added to player hand
                 playerOneHand.cards.addAll(givenCards);
                 // check if player has a book, if they do remove the book and return the remaining cards
                 playerOneHand = collectBook(playerOneHand, player1);
                 currentPlayer = 2;
             } else if (currentPlayer == 2) {
+                // sort player hand
+                playerTwoHand.sortCards();
                 // player asks for card from opponent
                 PlayingCard askingCard = askForCard(player2, playerTwoHand);
                 // cards from opponent are saved in new ArrayList
-                ArrayList givenCards = checkForCard(askingCard, playerOneHand);
+                ArrayList givenCards = checkForCard(askingCard, playerOneHand, player1, player2);
                 // cards returned from opponent added to player hand
                 playerTwoHand.cards.addAll(givenCards);
                 // check if player has a book, if they do remove the book and return the remaining cards
@@ -124,9 +127,11 @@ public class GoFish extends Game {
     public void declareWinner() {
         if (player1.getNumOfBooks() < player2.getNumOfBooks()) {
             System.out.println(player2.getName() + " has won!");
+            System.out.println(player2.getName() + "s score was: " + player2.getNumOfBooks());
             player2.setGamesWon(player2.getGamesWon() + 1);
         } else {
             System.out.println(player1.getName() + " has won!");
+            System.out.println(player1.getName() + "s score was: " + player1.getNumOfBooks());
             player1.setGamesWon(player1.getGamesWon() + 1);
         }
     }
@@ -135,35 +140,32 @@ public class GoFish extends Game {
 
         GroupOfCards tempHand = playerHand;
         ArrayList<PlayingCard> book = new ArrayList<>();
-        
-        System.out.println("input: " + tempHand.cards);
 
         for (int i = 0; i < playerHand.cards.size(); i++) {
             PlayingCard checkingAgainstCard = playerHand.cards.get(i);
-            System.out.println("current card: " + checkingAgainstCard);
-            
+
             int count = 0;
             for (int j = 0; j < playerHand.cards.size(); j++) {
                 if (checkingAgainstCard.getValue() == playerHand.cards.get(j).getValue()) {
                     if (checkingAgainstCard.getSuits() != playerHand.cards.get(j).getSuits()) {
                         count++;
-                        System.out.println("REMOVED: " + playerHand.cards.get(j));
                         book.add(playerHand.cards.get(j));
                     }
                 }
             }
             if (count == 3) {
+                book.add(checkingAgainstCard);
                 playerHand.cards.removeAll(book);
                 player.addOneBook();
                 System.out.println(player.getName() + " collected a book of " + checkingAgainstCard.getValue() + "s!");
+                System.out.println(player.getName() + " has " + player.getNumOfBooks() + " book(s)");
             } else if (count < 3) {
-                System.out.println("count=" + count + " : book : " +  book);
                 book.clear();
                 //playerHand.cards = tempHand.cards;
             }
 
         }
-        System.out.println("return: " + playerHand.cards);
+        System.out.println("");
         return playerHand;
     }
 
@@ -173,22 +175,37 @@ public class GoFish extends Game {
      *
      * @param player
      * @param hand
+     * @return
      */
     public PlayingCard askForCard(GoFishPlayer player, GroupOfCards hand) {
         Scanner sc = new Scanner(System.in);
+        boolean validNumber = false;
+        PlayingCard askingCard = null;
 
-        System.out.println(player.getName() + ", it is your turn, here are your cards: \n");
+        System.out.println(player.getName() + ", it is your turn, here are your cards: ");
 
         //print all the cards in the users hand
         for (int i = 0; i < hand.cards.size(); i++) {
             System.out.println((i + 1) + ": " + hand.cards.get(i));
         }
 
-        //get user input to see which card they want to ask for
-        System.out.print("Choose a card value to ask for by entering the associated number: ");
-        int userChoice = sc.nextInt() - 1;
-        PlayingCard askingCard = hand.cards.get(userChoice);
-        System.out.println(player.getName() + " says: \"give me all of your "
+        while (!validNumber) {
+            try {
+                //get user input to see which card they want to ask for
+                System.out.print("Choose a card value to ask for by entering the associated number: ");
+                String user = sc.nextLine();
+                int userChoice = Integer.parseInt(user) - 1;
+                askingCard = hand.cards.get(userChoice);
+                validNumber = true;
+            } catch (NumberFormatException e1) {
+                System.out.println("Enter only integer numbers, don't enter letters or spaces");
+
+            } catch (IndexOutOfBoundsException e2) {
+                System.out.println("Choose one of the numbers on the left side of your cards.");                
+            }
+        }
+
+        System.out.println("\n" + player.getName() + " says: \"give me all of your "
                 + askingCard.getValue() + "s\"");
 
         return askingCard;
@@ -202,22 +219,24 @@ public class GoFish extends Game {
      * @param opponentHand : current players opponents card hand
      * @return ArrayList of type PlayingCard : contains all cards of same value as input card
      */
-    public ArrayList<PlayingCard> checkForCard(PlayingCard askingCard, GroupOfCards opponentHand) {
+    public ArrayList<PlayingCard> checkForCard(PlayingCard askingCard, GroupOfCards opponentHand, GoFishPlayer opponent, GoFishPlayer player) {
         ArrayList<PlayingCard> cardsToGive = new ArrayList<>();
 
         for (int i = 0; i < opponentHand.cards.size(); i++) {
             PlayingCard temp = opponentHand.cards.get(i);
             if (askingCard.getValue() == temp.getValue()) {
-                System.out.println("found a match!");
-                System.out.println(temp);
+                System.out.println(opponent.getName() + " hands over a: " + temp);
                 cardsToGive.add(temp);
-                opponentHand.cards.remove(temp);
             }
         }
 
         if (cardsToGive.isEmpty()) {
-            System.out.println("Go fish!");
+            System.out.println(opponent.getName() + " says: \"Go fish!\"");
+            PlayingCard drawnCard = deck.drawACard();
+            System.out.println(player.getName() + " drew a " + drawnCard);
+            cardsToGive.add(drawnCard);
         }
+        opponentHand.cards.removeAll(cardsToGive);
         return cardsToGive;
     }
 
@@ -274,10 +293,10 @@ public class GoFish extends Game {
         //choose the starting player randomly
         if (Math.random() != 0.5) {
             currentPlayer = 1;
-            System.out.println(player1.getName() + " will start first!");
+            System.out.println("\n" + player1.getName() + " will start first!" + "\n");
         } else if (Math.random() == 0.5) {
             currentPlayer = 2;
-            System.out.println(player2.getName() + " will start first!");
+            System.out.println("\n" + player2.getName() + " will start first!" + "\n");
         }
 
     }
