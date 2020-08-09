@@ -1,7 +1,6 @@
 package ca.sheridancollege.project;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -18,8 +17,10 @@ public class GoFish extends Game {
 
     private final int REQUIRED_PLAYERS = 2;
     private int numOfPlayers;
+    
     private GroupOfCards playerOneHand = new GroupOfCards();
     private GroupOfCards playerTwoHand = new GroupOfCards();
+    
     private GoFishPlayer player1 = new GoFishPlayer();
     private GoFishPlayer player2 = new GoFishPlayer();
 
@@ -28,16 +29,18 @@ public class GoFish extends Game {
     private int currentPlayer = 0;
 
     /**
-     * One argument
+     * One argument constructor
      *
-     * @param name
+     * @param name : input for name
      */
     public GoFish(String name) {
-        // TODO - implement GoFish.GoFish
-        //throw new UnsupportedOperationException();
         super(name);
     }
 
+    /**
+     * Gettter for numOfPlayers
+     * @return : number of players in game currently
+     */
     public int getNumOfPlayers() {
         return this.numOfPlayers;
     }
@@ -45,12 +48,16 @@ public class GoFish extends Game {
     /**
      * Setter for numOfPlayers
      *
-     * @param numOfPlayers
+     * @param numOfPlayers : input for numOfPlayers
      */
     public void setNumOfPlayers(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
     }
 
+    /**
+     * Getter for playerOneHand
+     * @return : player one hand of cards
+     */
     public GroupOfCards getPlayerOneHand() {
         return this.playerOneHand;
     }
@@ -58,12 +65,16 @@ public class GoFish extends Game {
     /**
      * This method sets the card hand for player 1
      *
-     * @param playerOneHand
+     * @param playerOneHand : input for playerOneHand
      */
     public void setPlayerOneHand(GroupOfCards playerOneHand) {
         this.playerOneHand = playerOneHand;
     }
 
+    /**
+     * Getter for playerTwoHand
+     * @return  : player two hand of cards
+     */
     public GroupOfCards getPlayerTwoHand() {
         return this.playerTwoHand;
     }
@@ -71,7 +82,7 @@ public class GoFish extends Game {
     /**
      * This method sets the card hand for player 2
      *
-     * @param playerTwoHand
+     * @param playerTwoHand : input for playerTwoHand
      */
     public void setPlayerTwoHand(GroupOfCards playerTwoHand) {
         this.playerTwoHand = playerTwoHand;
@@ -82,7 +93,7 @@ public class GoFish extends Game {
      * handing each player 7 cards, starting player is chosen randomly. Starting
      * player asks the opponent for a card, if opponent has requested card, they
      * must hand it over. If opponent does not have requested card, player must
-     * draw a card.
+     * draw a card. This repeats until 13 books are obtained.
      */
     @Override
     public void play() {
