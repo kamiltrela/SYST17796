@@ -168,7 +168,7 @@ public class GoFish extends Game {
      *
      * @param playerHand: input for current players hand.
      * @param player: input for the current player.
-     * @return: GroupOfCards, remaining cards after a book is removed, or return
+     * @return : GroupOfCards, remaining cards after a book is removed, or return
      * input hand.
      */
     public GroupOfCards collectBook(GroupOfCards playerHand, GoFishPlayer player) {
@@ -212,7 +212,7 @@ public class GoFish extends Game {
      *
      * @param player: the player whose turn it is.
      * @param hand: input for players hand of cards.
-     * @return: PlayingCard, card of value the player asks opponent for.
+     * @return : PlayingCard, card of value the player asks opponent for.
      */
     public PlayingCard askForCard(GoFishPlayer player, GroupOfCards hand) {
         Scanner sc = new Scanner(System.in);
@@ -261,6 +261,8 @@ public class GoFish extends Game {
      *
      * @param askingCard : card the current player is asking for
      * @param opponentHand : current players opponents card hand
+     * @param opponent : input for current players opponent
+     * @param player : input for current player
      * @return ArrayList of type PlayingCard : contains all cards of same value
      * as input card
      */
