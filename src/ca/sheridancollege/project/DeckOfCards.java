@@ -6,9 +6,9 @@ import ca.sheridancollege.project.PlayingCard.Value;
 import java.util.ArrayList;
 
 /**
- * The class that models your game. You should create a more specific child of this class and instantiate the methods
- * given.
- *
+ * This class handles the functionality of how the deck works through the methods
+ * of distributing a hand to the player, allowing the player to draw a card, and 
+ * generating a new deck for the game.
  * @author Kamil Trela, Jun 2020
  * @author Estefania Melo, 2020
  */
@@ -21,6 +21,10 @@ public class DeckOfCards extends GroupOfCards {
 
 	}
 
+        /**
+         * This method distributes a hand to each player 
+         * @return ArrayList: 7 cards off the top of the deck.
+         */
 	public ArrayList distributeHand() {
          
             DeckOfCards temp = new DeckOfCards();
@@ -37,6 +41,10 @@ public class DeckOfCards extends GroupOfCards {
 
 	}
 
+        /**
+         * This method allows a player to draw a card from the deck 
+         * @return PlayingCard: one card from the top of the deck.
+         */
 	public PlayingCard drawACard() {
             PlayingCard temp1 = null;
             if(!deckOfCardsList.isEmpty()){
@@ -47,6 +55,9 @@ public class DeckOfCards extends GroupOfCards {
             return temp1;
 	}
 
+        /**
+         * This method generates a deck using the enums from the PlayinCard class.
+         */
 	public void generateDeck() {
             PlayingCard.Suits.values();
             PlayingCard.Value.values();

@@ -20,7 +20,9 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
     }
 
  
-
+    /**
+     * 
+     */
     public enum Suits {
         HEARTS,
         CLUBS, 
@@ -28,6 +30,9 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
         DIAMONDS
     }
 
+    /**
+     * 
+     */
     public enum Value {
         ACE, 
         TWO, 
@@ -58,6 +63,10 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
         this.suits=suits;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Value getValue() {
         return this.value;
     }
@@ -70,6 +79,10 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
         this.value = value;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Suits getSuits() {
         return this.suits;
     }

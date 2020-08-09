@@ -24,8 +24,6 @@ public class GoFishPlayer extends Player {
      * @param name
      */
     public GoFishPlayer(String name) {
-        // TODO - implement GoFishPlayer.GoFishPlayer
-        //throw new UnsupportedOperationException();
         super(name);
     }
 
@@ -41,6 +39,10 @@ public class GoFishPlayer extends Player {
         this.gamesWon = gamesWon;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getNumOfBooks() {
         return this.numOfBooks;
     }
