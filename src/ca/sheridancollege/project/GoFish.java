@@ -293,7 +293,7 @@ public class GoFish extends Game {
             PlayingCard drawnCard = deck.drawACard();
             System.out.println(player.getName() + " drew a " + drawnCard);
             cardsToGive.add(drawnCard);
-        } else {
+        } else if (deck.deckOfCardsList.isEmpty()) {
             System.out.println("The deck has no cards");
         }
         opponentHand.cards.removeAll(cardsToGive);
