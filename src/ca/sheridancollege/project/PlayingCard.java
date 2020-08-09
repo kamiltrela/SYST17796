@@ -19,10 +19,6 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
             return 0;
     }
 
- 
-    /**
-     * 
-     */
     public enum Suits {
         HEARTS,
         CLUBS, 
@@ -30,9 +26,6 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
         DIAMONDS
     }
 
-    /**
-     * 
-     */
     public enum Value {
         ACE, 
         TWO, 
@@ -54,9 +47,10 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
 
    
     /**
-     *
-     * @param value
-     * @param suit
+     * Two argument constructor that takes in a value of type Value and a suit of
+     * type Suit. 
+     * @param value: input for the card value.
+     * @param suit: input for the card suit.
      */
     public PlayingCard(Value value, Suits suits) {
         this.value=value;
@@ -64,32 +58,32 @@ public class PlayingCard extends Card implements Comparable<PlayingCard>{
     }
 
     /**
-     * 
-     * @return 
+     * Getter for the Value of the card.
+     * @return Value: value of the current card.
      */
     public Value getValue() {
         return this.value;
     }
 
     /**
-     *
-     * @param value
+     * Setter for the Value of the card.
+     * @param value: input for value of type Value.
      */
     public void setValue(Value value) {
         this.value = value;
     }
 
     /**
-     * 
-     * @return 
+     * Getter for the card Suit.
+     * @return: suit of the current card.
      */
     public Suits getSuits() {
         return this.suits;
     }
 
     /**
-     *
-     * @param suit
+     * Setter for the card Suit.
+     * @param suits: input for suit of type Suit.
      */
     public void setSuit(Suits suits) {
         this.suits = suits;
